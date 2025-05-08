@@ -5,8 +5,8 @@ from cores import branco
 pygame.init()
 
 # Medições da tela 
-largura = 1000
-altura = 800
+largura = 800
+altura = 600
 
 # Inicia a tela 
 tela = pygame.display.set_mode((largura, altura))
@@ -16,7 +16,7 @@ pygame.display.set_caption("GALAGA")
 
 # Define o fundo  
 fundos = pygame.image.load("titulo.png")  
-fundo = pygame.transform.scale(fundos, (largura, altura))
+afundo = pygame.transform.scale(fundos, (largura, altura))
 
 # Configuração do botão START
 fonte_subtitulo = pygame.font.Font(None, 45)  # Tamanho e fonte da letra  
@@ -35,7 +35,7 @@ while jogo:
             jogo = False
 
     # Desenha o fundo na tela
-    tela.blit(fundo, (0, 0))
+    tela.blit(fundos, (0, 0))
 
     # Desenha o botão START na tela abaixo da nave
     tela.blit(texto, titulo_pos)
