@@ -7,6 +7,7 @@ cor_jogador,
 cor_inimigo_vermelho,
 cor_inimigo_verde,
 cor_inimigo_azul,
+cor_inimigo_roxo,
 cor_tiro_jogador,
 cor_tiro_2x_dano,
 cor_tiro_inimigo,
@@ -50,3 +51,12 @@ inimigo_h_espaco = 50
 inimigo_v_espaco = 44
 inicio_inimigo_x = 25
 inicio_inimigo_y = 60
+
+#Configuração dos inimigos 
+
+tipo_inimigo = [
+    {'name': 'red', 'color': cor_inimigo_vermelho, 'speed_factor': 1.0, 'points': 250, 'hp': 1, 'shots': 1, 'damage': 2, 'zigzag': False, 'bullet_color': cor_tiro_2x_dano},
+    {'name': 'green', 'color': cor_inimigo_verde, 'speed_factor': 1.2, 'points': 200, 'hp': 2, 'shots': 1, 'damage': 1, 'zigzag': False, 'bullet_color': cor_tiro_inimigo},
+    {'name': 'blue', 'color': cor_inimigo_azul, 'speed_factor': 0.8, 'points': 100, 'hp': 1, 'shots': 1, 'damage': 1, 'zigzag': False, 'bullet_color': cor_tiro_inimigo},
+    {'name': 'purple', 'color': cor_inimigo_roxo, 'speed_factor': 1.0, 'points': 500, 'hp': 4, 'shots': 2, 'damage': 1, 'zigzag': False, 'bullet_color': cor_tiro_inimigo},
+]
