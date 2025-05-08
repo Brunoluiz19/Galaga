@@ -1,6 +1,14 @@
 # Definindo cores 
 
-branco = (255,255,255)
-azul = (100, 100, 255)
-preto = (0,0,0)
-vermelho = (255, 0, 0)
+cor_jogador = (255,255,255)
+cor_inimigo_vermelho = (255, 85, 85)
+cor_inimigo_verde = (85, 255, 85)
+cor_inimigo_azul = (85, 85, 255)
+cor_tiro_jogador = (0, 255, 255)
+cor_tiro_2x_dano = (186,85,211)
+cor_tiro_inimigo = (255, 0, 0)
+cor_textos = (255, 255, 255)
+cor_escudo = (51, 255, 204)
+cor_vida = (255, 105, 180)
+cor_powerup_escudo = (0, 200, 200)
+cor_tiro_duplo_jogador = (255, 255, 0)

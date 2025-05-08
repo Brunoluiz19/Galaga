@@ -2,6 +2,20 @@ import pygame
 import random
 import sys
 import math
+from cores import (
+cor_jogador,
+cor_inimigo_vermelho,
+cor_inimigo_verde,
+cor_inimigo_azul,
+cor_tiro_jogador,
+cor_tiro_2x_dano,
+cor_tiro_inimigo,
+cor_textos,
+cor_escudo,
+cor_vida,
+cor_powerup_escudo,
+cor_tiro_duplo_jogador,
+                   )
 
 pygame.init()
 
