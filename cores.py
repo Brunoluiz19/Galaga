@@ -1,5 +1,6 @@
 # Definindo cores 
-
+branco=(255,255,255)
+azul=(85, 85, 255)
 cor_jogador = (255,255,255)
 cor_inimigo_vermelho = (255, 85, 85)
 cor_inimigo_verde = (85, 255, 85)
