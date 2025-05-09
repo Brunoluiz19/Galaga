@@ -2,27 +2,27 @@ import os
 import pygame
 import sys
 import subprocess
-from cores import branco,azul
+from cores import branco, azul
 
 # Centraliza a janela
 os.environ['SDL_VIDEO_CENTERED'] = '1'
 
 pygame.init()
 
-# Medições da tela 
+# Medições da tela
 largura = 1000
 altura = 800
 
-# Inicia a tela 
+# Inicia a tela
 tela = pygame.display.set_mode((largura, altura))
 pygame.display.set_caption("GALAGA")
 
 # Carrega e redimensiona o fundo
-fundos = pygame.image.load("titulo.png")  
+fundos = pygame.image.load("titulo.png")
 fundo = pygame.transform.scale(fundos, (largura, altura))
 
 # Fonte e cor dos botões
-fonte_subtitulo = pygame.font.Font(None, 45)  
+fonte_subtitulo = pygame.font.Font(None, 45)
 cor_botao = azul
 cor_hover = branco
 
@@ -34,8 +34,8 @@ def desenhar_botao(texto, posicao, rect, mouse_pos):
     tela.blit(texto, posicao)
 
 # Texto dos botões
-texto_start = fonte_subtitulo.render('START', True, cor_botao)  
-pos_start = (largura // 2 - texto_start.get_width() // 2, altura - 150)  
+texto_start = fonte_subtitulo.render('START', True, cor_botao)
+pos_start = (largura // 2 - texto_start.get_width() // 2, altura - 150)
 rect_start = pygame.Rect(pos_start[0], pos_start[1], texto_start.get_width(), texto_start.get_height())
 
 texto_comandos = fonte_subtitulo.render('COMANDOS', True, cor_botao)
@@ -57,7 +57,7 @@ while jogo:
                 sys.exit()
             elif rect_comandos.collidepoint(evento.pos):
                 pygame.quit()
-                subprocess.run([sys.executable, "comandos.py"])
+                subprocess.run([sys.executable, "tutorial.py"])
                 sys.exit()
 
     tela.blit(fundo, (0, 0))
