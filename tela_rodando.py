@@ -2,6 +2,8 @@ import pygame
 import random
 import sys
 import math
+import subprocess
+from classes import (tiro, inimigo, PowerUp, Game)
 from cores import (
 cor_jogador,
 cor_inimigo_vermelho,
@@ -61,3 +63,31 @@ tipo_inimigo = [
     {'name': 'purple', 'color': cor_inimigo_roxo, 'speed_factor': 1.0, 'points': 500, 'hp': 4, 'shots': 2, 'damage': 1, 'zigzag': False, 'bullet_color': cor_tiro_inimigo},
 ]
 
+def draw_player(surface, x, y, shield):
+    points = [(x + largura_jogador / 2, y), (x + largura_jogador, y + altura_jogador), (x, y + altura_jogador)]
+    pygame.draw.polygon(surface, cor_jogador, points)
+    pygame.draw.polygon(surface, (0, 214, 255), points, 3)
+    pygame.draw.circle(surface, (0, 76, 102), (int(x + largura_jogador / 2), int(y + altura_jogador * 0.6)), 6)
+    pygame.draw.circle(surface, cor_jogador, (int(x + largura_jogador / 2), int(y + altura_jogador * 0.6)), 6, 2)
+    if shield:
+        pygame.draw.circle(surface, cor_escudo, (int(x + largura_jogador / 2), int(y + altura_jogador / 2)), 25, 2)
+
+def draw_text(surface, text, x, y, font=LARGE_FONT):
+    surface.blit(font.render(text, True, cor_textos), (x, y))
+
+def main():
+    game = Game()
+    while game.running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                game.running = False
+        game.update()
+        game.draw(screen)
+        clock.tick(FPS)
+
+    pygame.quit()
+    subprocess.run([sys.executable, "ranking.py", str(game.score)])
+    sys.exit()
+
+if __name__ == "_main_":
+    main()

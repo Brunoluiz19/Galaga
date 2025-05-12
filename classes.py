@@ -36,7 +36,9 @@ inicio_inimigo_y,
 FPS,
 FONT,
 LARGE_FONT,
-background_image)
+background_image,
+draw_player, 
+draw_text)
 
 largura,altura = 1000, 800
 
@@ -255,13 +257,13 @@ class Game:
 
     def draw(self, surface):
         surface.blit(background_image, (0, 0))
-        cor_jogador(surface, self.player_x, self.player_y, self.shield_active)
+        draw_player(surface, self.player_x, self.player_y, self.shield_active)
         for bullet in self.bullets: bullet.draw(surface)
         for bullet in self.enemy_bullets: bullet.draw(surface)
         for enemy in self.enemies: enemy.draw(surface)
         for powerup in self.powerups: powerup.draw(surface)
-        cor_textos(surface, f"PONTUAÇÃO: {self.score}", 10, 10)
-        cor_textos(surface, f"VIDAS: {self.player_lives}", largura - 100, 10)
+        draw_text(surface, f"PONTUAÇÃO: {self.score}", 10, 10)
+        draw_text(surface, f"VIDAS: {self.player_lives}", largura - 100, 10)
         if self.player_lives <= 0:
             text = FONT.render("GAME OVER", True, (255, 0, 0))
             surface.blit(text, (altura // 2 - text.get_width() // 2, largura // 2 - 20))
