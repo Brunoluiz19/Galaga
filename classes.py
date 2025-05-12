@@ -23,7 +23,16 @@ altura_tiro,
 velocidade_tiro_jogador,
 velocidade_tiro_inimigo,
 tipo_inimigo,
-cor_tiro_inimigo,)
+cor_tiro_inimigo,
+largura_jogador,
+altura_jogador,
+velocidade_jogador,
+qnt_linha_inimigo,
+qnt_coluna_inimigo,
+inimigo_h_espaco,
+inimigo_v_espaco,
+inicio_inimigo_x,
+inicio_inimigo_y)
 
 largura,altura = 1000, 800
 
@@ -127,3 +136,63 @@ class PowerUp:
 
     def off_screen(self):
         return self.y > altura
+
+# jogo
+class Game:
+    def _init_(self):
+        self.player_x = largura // 2 - largura_jogador // 2
+        self.player_y = altura - 60
+        self.player_lives = 5
+        self.bullets = []
+        self.enemy_bullets = []
+        self.enemies = []
+        self.powerups = []
+        self.score = 0
+        self.running = True
+        self.shoot_cooldown = 0
+        self.shield_active = False
+        self.double_shot = False
+        self.shield_timer = 0
+        self.double_timer = 0
+        self.spawn_enemies()
+
+    def spawn_enemies(self):
+        self.enemies.clear()
+        kinds = ['azul', 'vermelho', 'verde', 'ciano']
+        for row in range(qnt_linha_inimigo):
+            for col in range(qnt_coluna_inimigo):
+                x = inicio_inimigo_x + col * inimigo_h_espaco
+                y = inicio_inimigo_y + row * inimigo_v_espaco
+                kind = random.choice(kinds)
+                self.enemies.append(inimigo(x, y, kind))
+
+    def update(self):
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_LEFT]: self.player_x -= velocidade_jogador
+        if keys[pygame.K_RIGHT]: self.player_x += velocidade_jogador
+        if keys[pygame.K_UP]: self.player_y -= velocidade_jogador
+        if keys[pygame.K_DOWN]: self.player_y += velocidade_jogador
+        self.player_x = max(0, min(largura - largura_jogador, self.player_x))
+        self.player_y = max(altura // 2, min(altura - altura_jogador, self.player_y))
+
+        if self.shoot_cooldown > 0: self.shoot_cooldown -= 1
+        if keys[pygame.K_SPACE] and self.shoot_cooldown == 0:
+            self.fire_bullet()
+
+        for bullet in self.bullets[:]:
+            bullet.update()
+            if bullet.off_screen():
+                self.bullets.remove(bullet)
+                continue
+            for enemy in self.enemies:
+                if not enemy.dead and bullet.rect.colliderect(enemy.rect):
+                    enemy.hp -= bullet.damage
+                    if enemy.hp <= 0:
+                        enemy.dead = True
+                        self.score += enemy.type['pontos']
+                        if random.random() < 0.15:
+                            kind = random.choice(['vida', 'escudo', 'double'])
+                            self.powerups.append(PowerUp(enemy.x + 10, enemy.y + 10, kind))
+                    self.bullets.remove(bullet)
+                break
+
