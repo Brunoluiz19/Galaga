@@ -60,3 +60,4 @@ tipo_inimigo = [
     {'name': 'blue', 'color': cor_inimigo_azul, 'speed_factor': 0.8, 'points': 100, 'hp': 1, 'shots': 1, 'damage': 1, 'zigzag': False, 'bullet_color': cor_tiro_inimigo},
     {'name': 'purple', 'color': cor_inimigo_roxo, 'speed_factor': 1.0, 'points': 500, 'hp': 4, 'shots': 2, 'damage': 1, 'zigzag': False, 'bullet_color': cor_tiro_inimigo},
 ]
+

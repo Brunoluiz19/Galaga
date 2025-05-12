@@ -32,7 +32,11 @@ qnt_coluna_inimigo,
 inimigo_h_espaco,
 inimigo_v_espaco,
 inicio_inimigo_x,
-inicio_inimigo_y)
+inicio_inimigo_y,
+FPS,
+FONT,
+LARGE_FONT,
+background_image)
 
 largura,altura = 1000, 800
 
@@ -179,20 +183,89 @@ class Game:
         if keys[pygame.K_SPACE] and self.shoot_cooldown == 0:
             self.fire_bullet()
 
-        for bullet in self.bullets[:]:
-            bullet.update()
-            if bullet.off_screen():
-                self.bullets.remove(bullet)
+        for tiro in self.bullets[:]:
+            tiro.update()
+            if tiro.off_screen():
+                self.bullets.remove(tiro)
                 continue
-            for enemy in self.enemies:
-                if not enemy.dead and bullet.rect.colliderect(enemy.rect):
-                    enemy.hp -= bullet.damage
-                    if enemy.hp <= 0:
-                        enemy.dead = True
-                        self.score += enemy.type['pontos']
+            for inimigo in self.enemies:
+                if not inimigo.dead and tiro.rect.colliderect(inimigo.rect):
+                    inimigo.hp -= tiro.damage
+                    if inimigo.hp <= 0:
+                        inimigo.dead = True
+                        self.score += inimigo.type['pontos']
                         if random.random() < 0.15:
                             kind = random.choice(['vida', 'escudo', 'double'])
-                            self.powerups.append(PowerUp(enemy.x + 10, enemy.y + 10, kind))
-                    self.bullets.remove(bullet)
+                            self.powerups.append(PowerUp(inimigo.x + 10, inimigo.y + 10, kind))
+                    self.bullets.remove(tiro)
                 break
 
+        for inimigo in self.enemies:
+            result = inimigo.update()
+            if result:
+                self.enemy_bullets.extend(result)
+
+        for tiro in self.enemy_bullets[:]:
+            tiro.update()
+            if tiro.off_screen():
+                self.enemy_bullets.remove(tiro)
+                continue
+            player_rect = pygame.Rect(self.player_x, self.player_y, largura_jogador, altura_jogador)
+            if tiro.rect.colliderect(player_rect):
+                if not self.shield_active:
+                    self.player_lives -= tiro.damage
+                self.enemy_bullets.remove(tiro)
+                if self.player_lives <= 0:
+                    self.running = False
+
+        for powerup in self.powerups[:]:
+            powerup.update()
+            if powerup.off_screen():
+                self.powerups.remove(powerup)
+            else:
+                player_rect = pygame.Rect(self.player_x, self.player_y, largura_jogador, altura_jogador)
+                if powerup.rect.colliderect(player_rect):
+                    if powerup.kind == 'life':
+                        self.player_lives += 1
+                    elif powerup.kind == 'shield':
+                        self.shield_active = True
+                        self.shield_timer = FPS * 5
+                    elif powerup.kind == 'double':
+                        self.double_shot = True
+                        self.double_timer = FPS * 5
+                    self.powerups.remove(powerup)
+
+        if self.shield_active:
+            self.shield_timer -= 1
+            if self.shield_timer <= 0:
+                self.shield_active = False
+
+        if self.double_shot:
+            self.double_timer -= 1
+            if self.double_timer <= 0:
+                self.double_shot = False
+
+    def fire_bullet(self):
+        self.shoot_cooldown = 20
+        if self.double_shot:
+            self.bullets.append(tiro(self.player_x + 6, self.player_y, velocidade_tiro_jogador))
+            self.bullets.append(tiro(self.player_x + largura_jogador - 10, self.player_y, velocidade_tiro_jogador))
+        else:
+            self.bullets.append(tiro(self.player_x + largura_jogador // 2 - largura_tiro // 2, self.player_y, velocidade_tiro_jogador))
+
+    def draw(self, surface):
+        surface.blit(background_image, (0, 0))
+        cor_jogador(surface, self.player_x, self.player_y, self.shield_active)
+        for bullet in self.bullets: bullet.draw(surface)
+        for bullet in self.enemy_bullets: bullet.draw(surface)
+        for enemy in self.enemies: enemy.draw(surface)
+        for powerup in self.powerups: powerup.draw(surface)
+        cor_textos(surface, f"PONTUAÇÃO: {self.score}", 10, 10)
+        cor_textos(surface, f"VIDAS: {self.player_lives}", largura - 100, 10)
+        if self.player_lives <= 0:
+            text = FONT.render("GAME OVER", True, (255, 0, 0))
+            surface.blit(text, (altura // 2 - text.get_width() // 2, largura // 2 - 20))
+            pygame.display.flip()
+            pygame.time.delay(2000)
+            self.running = False
+        pygame.display.flip()
