@@ -2,7 +2,21 @@ import pygame
 import random
 import sys
 import math
-from cores import (cor_tiro_jogador,cor_tiro_duplo_jogador,)
+from cores import (
+cor_jogador,
+cor_inimigo_vermelho,
+cor_inimigo_verde,
+cor_inimigo_azul,
+cor_inimigo_roxo,
+cor_tiro_jogador,
+cor_tiro_2x_dano,
+cor_tiro_inimigo,
+cor_textos,
+cor_escudo,
+cor_vida,
+cor_powerup_escudo,
+cor_tiro_duplo_jogador,
+                   )
 from tela_rodando import (
 largura_tiro,
 altura_tiro,
@@ -91,3 +105,25 @@ class inimigo:
         pygame.draw.polygon(surface, self.type['cor'], points)
         pygame.draw.circle(surface, (0, 0, 0), (int(self.x + self.width / 2), int(self.y + self.height * 0.6)), 6)
         pygame.draw.circle(surface, self.type['cor'], (int(self.x + self.width / 2), int(self.y + self.height * 0.6)), 6, 2)
+
+# power up
+
+class PowerUp:
+    def _init_(self, x, y, kind):
+        self.x = x
+        self.y = y
+        self.kind = kind
+        self.size = 16
+        self.speed = 2
+        self.rect = pygame.Rect(self.x, self.y, self.size, self.size)
+
+    def update(self):
+        self.y += self.speed
+        self.rect.topleft = (self.x, self.y)
+
+    def draw(self, surface):
+        color = cor_vida if self.kind == 'vida' else cor_powerup_escudo if self.kind == 'escudo' else cor_tiro_duplo_jogador
+        pygame.draw.circle(surface, color, (self.x + self.size // 2, self.y + self.size // 2), self.size // 2)
+
+    def off_screen(self):
+        return self.y > altura
