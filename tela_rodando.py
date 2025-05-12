@@ -3,7 +3,7 @@ import random
 import sys
 import math
 import subprocess
-from classes import (tiro, inimigo, PowerUp, Game)
+from classes import Game
 from cores import (
 cor_jogador,
 cor_inimigo_vermelho,
