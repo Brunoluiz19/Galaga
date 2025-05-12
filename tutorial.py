@@ -29,7 +29,7 @@ def show_tutorial():
                 sys.exit()
             elif event.type == pygame.KEYDOWN:
                 pygame.quit()
-                subprocess.run([sys.executable, "tela_rodando.py"])
+                subprocess.run([sys.executable, "tela_inicial.py"])
                 sys.exit()
 
         screen.fill((255, 255, 255))  # Fundo branco
