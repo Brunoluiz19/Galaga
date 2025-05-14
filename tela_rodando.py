@@ -20,7 +20,11 @@ import math
 import subprocess
 
 pygame.init()
-
+som_tiro = pygame.mixer.Sound("som_tiro.wav")
+som_tiro.set_volume(0.5)
+pygame.mixer.init()
+pygame.mixer.music.load("som_principal.mp3")
+pygame.mixer.music.play(1)  # 0 = toca uma vez
 largura, altura = 1000, 800
 screen = pygame.display.set_mode((largura, altura))
 pygame.display.set_caption("GALAGA")
@@ -268,9 +272,9 @@ class Game:
         # Verifica se todos os inimigos foram derrotados
         if all(e.dead for e in self.enemies):
             self.spawn_enemies()
-
     def fire_bullet(self):
         self.shoot_cooldown = 20
+        som_tiro.play()  # Toca o som de tiro
         if self.double_shot:
             self.bullets.append(tiro(self.player_x + 6, self.player_y, velocidade_tiro_jogador))
             self.bullets.append(tiro(self.player_x + largura_jogador - 10, self.player_y, velocidade_tiro_jogador))

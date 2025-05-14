@@ -44,7 +44,7 @@ def show_tutorial():
 
         draw_text(screen, "COMANDOS:", 60, y)
         y += 30
-        draw_text(screen, "Setas ← → ↑ ↓: mover a nave", 80, y)
+        draw_text(screen, "Setas ← → ↑ ↓ ou adws: mover a nave", 80, y)
         y += 30
         draw_text(screen, "Barra de espaço: atirar", 80, y)
 
@@ -55,18 +55,18 @@ def show_tutorial():
         y += 30
         draw_text(screen, "Verde: resistente (tem 2 de vida e tira 1 de dano)(200 pontos)", 80, y)
         y += 30
-        draw_text(screen, "Vermelho: rápido e fraco (so tem 1 de vida porem seus tiros tiram 2 vidas)(250 pontos)", 80, y)
+        draw_text(screen, "Vermelho: rápido e forte (so tem 1 de vida porem seus tiros tiram 2 vidas)(250 pontos)", 80, y)
         y += 30
         draw_text(screen, "Magenta: muito resistente e perigoso (4 de vida e da um tiro duplo)(500 pontos)", 80, y)
 
         y += 50
         draw_text(screen, "POWER-UPS:", 60, y)
         y += 30
-        draw_text(screen, "🟢 Verde água: Escudo temporário", 80, y)
+        draw_text(screen, " azul: Escudo temporário", 80, y)
         y += 30
-        draw_text(screen, "🟡 Amarelo: Tiro duplo por tempo limitado", 80, y)
+        draw_text(screen, " Amarelo: Tiro duplo por tempo limitado", 80, y)
         y += 30
-        draw_text(screen, "💖 Rosa: Ganha uma vida extra", 80, y)
+        draw_text(screen, " Rosa: Ganha uma vida extra", 80, y)
 
         y += 50
         draw_text(screen, "Pressione qualquer tecla para voltar...", largura // 2 - 180, y, FONT, (100, 100, 100))
