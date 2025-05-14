@@ -11,7 +11,7 @@ pygame.init()
 
 # Inicia o mixer e carrega a música de início
 pygame.mixer.init()
-pygame.mixer.music.load("som_inicio.mp3")
+pygame.mixer.music.load("som_telai.mp3")
 pygame.mixer.music.play(1)  # 0 = toca uma vez
 
 # Medições da tela
