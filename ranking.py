@@ -5,6 +5,10 @@ import subprocess
 
 # Inicializa o pygame
 pygame.init()
+# Inicia o mixer e carrega a música de início
+pygame.mixer.init()
+pygame.mixer.music.load("melhor_som_final.mp3")
+pygame.mixer.music.play(1)  # 0 = toca uma vez
 
 WIDTH, HEIGHT = 600, 700
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
