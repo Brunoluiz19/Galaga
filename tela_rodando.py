@@ -187,10 +187,15 @@ class Game:
 
     def update(self):
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_LEFT]: self.player_x -= velocidade_jogador
-        if keys[pygame.K_RIGHT]: self.player_x += velocidade_jogador
-        if keys[pygame.K_UP]: self.player_y -= velocidade_jogador
-        if keys[pygame.K_DOWN]: self.player_y += velocidade_jogador
+
+        if keys[pygame.K_LEFT] or keys[pygame.K_a]:
+            self.player_x -= velocidade_jogador
+        if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
+            self.player_x += velocidade_jogador
+        if keys[pygame.K_UP] or keys[pygame.K_w]:
+            self.player_y -= velocidade_jogador
+        if keys[pygame.K_DOWN] or keys[pygame.K_s]:
+            self.player_y += velocidade_jogador
         self.player_x = max(0, min(largura - largura_jogador, self.player_x))
         self.player_y = max(altura // 2, min(altura - altura_jogador, self.player_y))
 
