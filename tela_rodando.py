@@ -12,6 +12,7 @@ from cores import (
     cor_vida,
     cor_powerup_escudo,
     cor_tiro_duplo_jogador,
+    cor_powerup_penetrante
 )
 import pygame
 import random
@@ -24,7 +25,7 @@ som_tiro = pygame.mixer.Sound("som_tiro.wav")
 som_tiro.set_volume(0.5)
 pygame.mixer.init()
 pygame.mixer.music.load("som_principal.mp3")
-pygame.mixer.music.play(1)  # 0 = toca uma vez
+pygame.mixer.music.play(1)
 largura, altura = 1000, 800
 screen = pygame.display.set_mode((largura, altura))
 pygame.display.set_caption("GALAGA")
@@ -39,11 +40,11 @@ FPS = 60
 largura_jogador = 50
 altura_jogador = 38
 velocidade_jogador = 5
-
 largura_tiro = 7
 altura_tiro = 13
 velocidade_tiro_jogador = 7
 velocidade_tiro_inimigo = 3
+
 
 qnt_linha_inimigo = 7
 qnt_coluna_inimigo = 10
@@ -60,7 +61,7 @@ tipo_inimigo = [
 ]
 
 class tiro:
-    def __init__(self, x, y, speed, from_player=True, damage=1, color=None):
+    def __init__(self, x, y, speed, from_player=True, damage=1, color=None, penetrante=False):
         self.x = x
         self.y = y
         self.speed = speed
@@ -69,6 +70,7 @@ class tiro:
         self.from_player = from_player
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
         self.damage = damage
+        self.penetrante = penetrante
         self.color = color if color else (cor_tiro_jogador if self.from_player else cor_tiro_inimigo)
 
     def update(self):
@@ -149,7 +151,16 @@ class PowerUp:
         self.rect.topleft = (self.x, self.y)
 
     def draw(self, surface):
-        color = cor_vida if self.kind == 'vida' else cor_powerup_escudo if self.kind == 'escudo' else cor_tiro_duplo_jogador
+        if self.kind == 'vida':
+            color = cor_vida
+        elif self.kind == 'escudo':
+            color = cor_powerup_escudo
+        elif self.kind == 'double':
+            color = cor_tiro_duplo_jogador
+        elif self.kind == 'penetrante':
+            color = cor_powerup_penetrante
+        else:
+            color = (255, 255, 255)
         pygame.draw.circle(surface, color, (self.x + self.size // 2, self.y + self.size // 2), self.size // 2)
 
     def off_screen(self):
@@ -169,8 +180,10 @@ class Game:
         self.shoot_cooldown = 0
         self.shield_active = False
         self.double_shot = False
+        self.penetrating_shot = False
         self.shield_timer = 0
         self.double_timer = 0
+        self.penetrating_timer = 0
         self.nivel = 0
         self.spawn_enemies()
 
@@ -191,21 +204,15 @@ class Game:
 
     def update(self):
         keys = pygame.key.get_pressed()
-
-        if keys[pygame.K_LEFT] or keys[pygame.K_a]:
-            self.player_x -= velocidade_jogador
-        if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
-            self.player_x += velocidade_jogador
-        if keys[pygame.K_UP] or keys[pygame.K_w]:
-            self.player_y -= velocidade_jogador
-        if keys[pygame.K_DOWN] or keys[pygame.K_s]:
-            self.player_y += velocidade_jogador
+        if keys[pygame.K_LEFT] or keys[pygame.K_a]: self.player_x -= velocidade_jogador
+        if keys[pygame.K_RIGHT] or keys[pygame.K_d]: self.player_x += velocidade_jogador
+        if keys[pygame.K_UP] or keys[pygame.K_w]: self.player_y -= velocidade_jogador
+        if keys[pygame.K_DOWN] or keys[pygame.K_s]: self.player_y += velocidade_jogador
         self.player_x = max(0, min(largura - largura_jogador, self.player_x))
         self.player_y = max(altura // 2, min(altura - altura_jogador, self.player_y))
 
         if self.shoot_cooldown > 0: self.shoot_cooldown -= 1
-        if keys[pygame.K_SPACE] and self.shoot_cooldown == 0:
-            self.fire_bullet()
+        if keys[pygame.K_SPACE] and self.shoot_cooldown == 0: self.fire_bullet()
 
         for b in self.bullets[:]:
             b.update()
@@ -218,16 +225,16 @@ class Game:
                     if inim.hp <= 0:
                         inim.dead = True
                         self.score += inim.type['pontos']
-                        if random.random() < 0.15:
-                            kind = random.choice(['vida', 'escudo', 'double'])
+                        if random.random() < 0.2:
+                            kind = random.choices(['vida', 'escudo', 'double', 'penetrante'], weights=[0.1, 0.2, 0.15, 0.2])[0]
                             self.powerups.append(PowerUp(inim.x + 10, inim.y + 10, kind))
-                    self.bullets.remove(b)
+                    if not b.penetrante:
+                        self.bullets.remove(b)
                     break
 
         for inim in self.enemies:
             result = inim.update()
-            if result:
-                self.enemy_bullets.extend(result)
+            if result: self.enemy_bullets.extend(result)
 
         for b in self.enemy_bullets[:]:
             b.update()
@@ -257,6 +264,9 @@ class Game:
                     elif p.kind == 'double':
                         self.double_shot = True
                         self.double_timer = FPS * 5
+                    elif p.kind == 'penetrante':
+                        self.penetrating_shot = True
+                        self.penetrating_timer = FPS * 5
                     self.powerups.remove(p)
 
         if self.shield_active:
@@ -269,17 +279,24 @@ class Game:
             if self.double_timer <= 0:
                 self.double_shot = False
 
-        # Verifica se todos os inimigos foram derrotados
+        if self.penetrating_shot:
+            self.penetrating_timer -= 1
+            if self.penetrating_timer <= 0:
+                self.penetrating_shot = False
+
         if all(e.dead for e in self.enemies):
             self.spawn_enemies()
+
     def fire_bullet(self):
         self.shoot_cooldown = 20
-        som_tiro.play()  # Toca o som de tiro
+        som_tiro.play()
+        penetrante = self.penetrating_shot
+        color = cor_powerup_penetrante if penetrante else cor_tiro_jogador
         if self.double_shot:
-            self.bullets.append(tiro(self.player_x + 6, self.player_y, velocidade_tiro_jogador))
-            self.bullets.append(tiro(self.player_x + largura_jogador - 10, self.player_y, velocidade_tiro_jogador))
+            self.bullets.append(tiro(self.player_x + 6, self.player_y, velocidade_tiro_jogador, penetrante=penetrante, color=color))
+            self.bullets.append(tiro(self.player_x + largura_jogador - 10, self.player_y, velocidade_tiro_jogador, penetrante=penetrante, color=color))
         else:
-            self.bullets.append(tiro(self.player_x + largura_jogador // 2 - largura_tiro // 2, self.player_y, velocidade_tiro_jogador))
+            self.bullets.append(tiro(self.player_x + largura_jogador // 2 - largura_tiro // 2, self.player_y, velocidade_tiro_jogador, penetrante=penetrante, color=color))
 
     def draw(self, surface):
         surface.blit(background_image, (0, 0))

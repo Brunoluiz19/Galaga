@@ -100,11 +100,17 @@ def show_tutorial():
         y += 30
         draw_powerup_circle(screen, (255, 105, 180), 120, y + 10)
         draw_text(screen, "Rosa: Ganha uma vida extra", 150, y)
+        y += 30
+        draw_powerup_circle(screen, (0, 0, 139), 120, y + 10)
+        draw_text(screen, "Azul escuro: tiro atravessa os inimigos", 150, y)
 
         y += 60
         draw_text(screen, "Pressione qualquer tecla para voltar...", largura // 2 - 190, y, FONT, (80, 80, 80))
 
         pygame.display.flip()
+
+# Executar o tutorial
+show_tutorial()
 
 # Execução principal
 if __name__ == "__main__":
