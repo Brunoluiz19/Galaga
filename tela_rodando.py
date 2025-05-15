@@ -20,7 +20,11 @@ import math
 import subprocess
 
 pygame.init()
-
+som_tiro = pygame.mixer.Sound("som_tiro.wav")
+som_tiro.set_volume(0.5)
+pygame.mixer.init()
+pygame.mixer.music.load("som_principal.mp3")
+pygame.mixer.music.play(1)  # 0 = toca uma vez
 largura, altura = 1000, 800
 screen = pygame.display.set_mode((largura, altura))
 pygame.display.set_caption("GALAGA")
@@ -41,8 +45,8 @@ altura_tiro = 13
 velocidade_tiro_jogador = 7
 velocidade_tiro_inimigo = 3
 
-qnt_linha_inimigo = 6
-qnt_coluna_inimigo = 15
+qnt_linha_inimigo = 7
+qnt_coluna_inimigo = 10
 inimigo_h_espaco = 50
 inimigo_v_espaco = 44
 inicio_inimigo_x = 25
@@ -52,7 +56,7 @@ tipo_inimigo = [
     {'name': 'red', 'cor': cor_inimigo_vermelho, 'speed_factor': 1.0, 'pontos': 250, 'hp': 1, 'tiros': 1, 'dano': 2, 'cor_tiro': cor_tiro_2x_dano},
     {'name': 'green', 'cor': cor_inimigo_verde, 'speed_factor': 1.2, 'pontos': 200, 'hp': 2, 'tiros': 1, 'dano': 1, 'cor_tiro': cor_tiro_inimigo},
     {'name': 'blue', 'cor': cor_inimigo_azul, 'speed_factor': 0.8, 'pontos': 100, 'hp': 1, 'tiros': 1, 'dano': 1, 'cor_tiro': cor_tiro_inimigo},
-    {'name': 'purple', 'cor': cor_inimigo_roxo, 'speed_factor': 1.0, 'pontos': 500, 'hp': 4, 'tiros': 2, 'dano': 1, 'cor_tiro': cor_tiro_inimigo},
+    {'name': 'purple', 'cor': cor_inimigo_roxo, 'speed_factor': 0.5, 'pontos': 500, 'hp': 4, 'tiros': 2, 'dano': 1, 'cor_tiro': cor_tiro_inimigo},
 ]
 
 class tiro:
@@ -137,7 +141,7 @@ class PowerUp:
         self.y = y
         self.kind = kind
         self.size = 16
-        self.speed = 2
+        self.speed = 3
         self.rect = pygame.Rect(self.x, self.y, self.size, self.size)
 
     def update(self):
@@ -268,9 +272,9 @@ class Game:
         # Verifica se todos os inimigos foram derrotados
         if all(e.dead for e in self.enemies):
             self.spawn_enemies()
-
     def fire_bullet(self):
         self.shoot_cooldown = 20
+        som_tiro.play()  # Toca o som de tiro
         if self.double_shot:
             self.bullets.append(tiro(self.player_x + 6, self.player_y, velocidade_tiro_jogador))
             self.bullets.append(tiro(self.player_x + largura_jogador - 10, self.player_y, velocidade_tiro_jogador))
