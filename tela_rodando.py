@@ -56,7 +56,7 @@ tipo_inimigo = [
     {'name': 'red', 'cor': cor_inimigo_vermelho, 'speed_factor': 1.0, 'pontos': 250, 'hp': 1, 'tiros': 1, 'dano': 2, 'cor_tiro': cor_tiro_2x_dano},
     {'name': 'green', 'cor': cor_inimigo_verde, 'speed_factor': 1.2, 'pontos': 200, 'hp': 2, 'tiros': 1, 'dano': 1, 'cor_tiro': cor_tiro_inimigo},
     {'name': 'blue', 'cor': cor_inimigo_azul, 'speed_factor': 0.8, 'pontos': 100, 'hp': 1, 'tiros': 1, 'dano': 1, 'cor_tiro': cor_tiro_inimigo},
-    {'name': 'purple', 'cor': cor_inimigo_roxo, 'speed_factor': 1.0, 'pontos': 500, 'hp': 4, 'tiros': 2, 'dano': 1, 'cor_tiro': cor_tiro_inimigo},
+    {'name': 'purple', 'cor': cor_inimigo_roxo, 'speed_factor': 0.5, 'pontos': 500, 'hp': 4, 'tiros': 2, 'dano': 1, 'cor_tiro': cor_tiro_inimigo},
 ]
 
 class tiro:
@@ -141,7 +141,7 @@ class PowerUp:
         self.y = y
         self.kind = kind
         self.size = 16
-        self.speed = 2
+        self.speed = 3
         self.rect = pygame.Rect(self.x, self.y, self.size, self.size)
 
     def update(self):
