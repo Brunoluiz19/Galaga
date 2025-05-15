@@ -82,8 +82,9 @@ def mostrar_ranking():
     ranking = carregar_ranking()
     ranking = [(nome, int(p)) for nome, p in ranking]
 
-    botao_jogar = pygame.Rect(100, 620, 180, 50)
-    botao_inicio = pygame.Rect(320, 620, 180, 50)
+    botao_jogar = pygame.Rect(60, 620, 150, 50)
+    botao_inicio = pygame.Rect(230, 620, 150, 50)
+    botao_sair = pygame.Rect(400, 620, 150, 50)
 
     clock = pygame.time.Clock()
     esperando = True
@@ -108,6 +109,7 @@ def mostrar_ranking():
 
         desenhar_botao("Jogar Novamente", botao_jogar, botao_jogar.collidepoint(mouse_pos))
         desenhar_botao("Início", botao_inicio, botao_inicio.collidepoint(mouse_pos))
+        desenhar_botao("Sair", botao_sair, botao_sair.collidepoint(mouse_pos))
 
         if mouse_click:
             if botao_jogar.collidepoint(mouse_pos):
@@ -117,6 +119,9 @@ def mostrar_ranking():
             elif botao_inicio.collidepoint(mouse_pos):
                 pygame.quit()
                 subprocess.run([sys.executable, "tela_inicial.py"])
+                sys.exit()
+            elif botao_sair.collidepoint(mouse_pos):
+                pygame.quit()
                 sys.exit()
 
         pygame.display.flip()
