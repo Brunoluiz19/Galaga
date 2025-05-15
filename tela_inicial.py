@@ -43,7 +43,7 @@ texto_start = fonte_subtitulo.render('START', True, cor_botao)
 pos_start = (largura // 2 - texto_start.get_width() // 2, altura - 150)
 rect_start = pygame.Rect(pos_start[0], pos_start[1], texto_start.get_width(), texto_start.get_height())
 
-texto_comandos = fonte_subtitulo.render('COMANDOS', True, cor_botao)
+texto_comandos = fonte_subtitulo.render('TUTORIAL', True, cor_botao)
 pos_comandos = (largura // 2 - texto_comandos.get_width() // 2, pos_start[1] + 60)
 rect_comandos = pygame.Rect(pos_comandos[0], pos_comandos[1], texto_comandos.get_width(), texto_comandos.get_height())
 

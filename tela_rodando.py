@@ -45,8 +45,8 @@ altura_tiro = 13
 velocidade_tiro_jogador = 7
 velocidade_tiro_inimigo = 3
 
-qnt_linha_inimigo = 6
-qnt_coluna_inimigo = 15
+qnt_linha_inimigo = 7
+qnt_coluna_inimigo = 10
 inimigo_h_espaco = 50
 inimigo_v_espaco = 44
 inicio_inimigo_x = 25
