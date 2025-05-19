@@ -55,7 +55,19 @@ nave_img_2 = pygame.transform.scale(nave_img_2, (largura_jogador, altura_jogador
 
 nave_img_1 = pygame.image.load("nave3.png")
 nave_img_1 = pygame.transform.scale(nave_img_1, (largura_jogador, altura_jogador))
+escudo_img = pygame.image.load("escudo.png")
+escudo_img = pygame.transform.scale(escudo_img, (largura_jogador + 20, altura_jogador + 20))
+inimigo_roxo_img = pygame.image.load("inimigo_roxo.png")
+inimigo_roxo_img = pygame.transform.scale(inimigo_roxo_img, (30, 24))
 
+inimigo_azul_img = pygame.image.load("inimigo_azul.png")
+inimigo_azul_img = pygame.transform.scale(inimigo_azul_img, (30, 24))
+
+inimigo_verde_img = pygame.image.load("inimigo_verde.png")
+inimigo_verde_img = pygame.transform.scale(inimigo_verde_img, (30, 24))
+
+inimigo_vermelho_img = pygame.image.load("inimigo_vermelho.png")
+inimigo_vermelho_img = pygame.transform.scale(inimigo_vermelho_img, (30, 24))
 
 qnt_linha_inimigo = 7
 qnt_coluna_inimigo = 10
@@ -329,6 +341,14 @@ def draw_player(surface, x, y, shield_active, vidas=5):
         imagem = nave_img_2
     else:
         imagem = nave_img_1
+
+   
+    if shield_active:
+        escudo_x = x - 10
+        escudo_y = y - 10
+        surface.blit(escudo_img, (escudo_x, escudo_y))
+
+    surface.blit(imagem, (x, y))
 
     surface.blit(imagem, (x, y))
 
