@@ -37,8 +37,8 @@ FONT = pygame.font.SysFont('Orbitron', 20, bold=True)
 LARGE_FONT = pygame.font.SysFont('Orbitron', 32, bold=True)
 clock = pygame.time.Clock()
 FPS = 60
-largura_jogador = 50
-altura_jogador = 38
+largura_jogador = 80
+altura_jogador = 80
 velocidade_jogador = 5
 largura_tiro = 7
 altura_tiro = 13
