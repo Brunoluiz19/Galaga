@@ -58,16 +58,16 @@ nave_img_1 = pygame.transform.scale(nave_img_1, (largura_jogador, altura_jogador
 escudo_img = pygame.image.load("escudo.png")
 escudo_img = pygame.transform.scale(escudo_img, (largura_jogador + 20, altura_jogador + 20))
 inimigo_roxo_img = pygame.image.load("inimigo_roxo.png")
-inimigo_roxo_img = pygame.transform.scale(inimigo_roxo_img, (30, 24))
+inimigo_roxo_img = pygame.transform.scale(inimigo_roxo_img, (60, 60))
 
 inimigo_azul_img = pygame.image.load("inimigo_azul.png")
-inimigo_azul_img = pygame.transform.scale(inimigo_azul_img, (30, 24))
+inimigo_azul_img = pygame.transform.scale(inimigo_azul_img, (60, 60))
 
 inimigo_verde_img = pygame.image.load("inimigo_verde.png")
-inimigo_verde_img = pygame.transform.scale(inimigo_verde_img, (30, 24))
+inimigo_verde_img = pygame.transform.scale(inimigo_verde_img, (60, 60))
 
 inimigo_vermelho_img = pygame.image.load("inimigo_vermelho.png")
-inimigo_vermelho_img = pygame.transform.scale(inimigo_vermelho_img, (30, 24))
+inimigo_vermelho_img = pygame.transform.scale(inimigo_vermelho_img, (60, 60))
 
 qnt_linha_inimigo = 7
 qnt_coluna_inimigo = 10
@@ -122,7 +122,6 @@ class inimigo:
         self.set_attributes_by_kind()
         self.move_speed = 0.7 * self.type['speed_factor']
         self.amplitude = 18
-
     def set_attributes_by_kind(self):
         mapping = {'vermelho': 'red', 'verde': 'green', 'azul': 'blue', 'ciano': 'purple'}
         enemy_name = mapping.get(self.kind, 'red')
@@ -130,6 +129,17 @@ class inimigo:
         self.hp = self.type['hp']
         self.color = self.type['cor']
 
+        # Atribui imagem com base no tipo
+        if self.kind == 'vermelho':
+            self.image = inimigo_vermelho_img
+        elif self.kind == 'verde':
+            self.image = inimigo_verde_img
+        elif self.kind == 'azul':
+            self.image = inimigo_azul_img
+        elif self.kind == 'ciano':
+            self.image = inimigo_roxo_img
+        else:
+            self.image = inimigo_vermelho_img  # padrão
     def update(self):
         if self.dead: return
         self.phase += 0.03
@@ -152,13 +162,10 @@ class inimigo:
             bullet = tiro(self.x + self.width / 2 - largura_tiro / 2 + offset, self.y + self.height, velocidade_tiro_inimigo, from_player=False, damage=self.type['dano'], color=self.type['cor_tiro'])
             bullets.append(bullet)
         return bullets
-
     def draw(self, surface):
-        if self.dead: return
-        points = [(self.x + self.width / 2, self.y), (self.x + self.width * 0.8, self.y + self.height), (self.x + self.width * 0.2, self.y + self.height)]
-        pygame.draw.polygon(surface, self.type['cor'], points)
-        pygame.draw.circle(surface, (0, 0, 0), (int(self.x + self.width / 2), int(self.y + self.height * 0.6)), 6)
-        pygame.draw.circle(surface, self.type['cor'], (int(self.x + self.width / 2), int(self.y + self.height * 0.6)), 6, 2)
+        if self.dead:
+            return
+        surface.blit(self.image, (self.x, self.y))
 
 class PowerUp:
     def __init__(self, x, y, kind):
