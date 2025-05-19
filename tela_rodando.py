@@ -44,6 +44,17 @@ largura_tiro = 7
 altura_tiro = 13
 velocidade_tiro_jogador = 7
 velocidade_tiro_inimigo = 3
+nave_img_5 = pygame.image.load("nave.png")
+nave_img_5 = pygame.transform.scale(nave_img_5, (largura_jogador, altura_jogador))
+
+nave_img_4 = pygame.image.load("nave1.png")
+nave_img_4 = pygame.transform.scale(nave_img_4, (largura_jogador, altura_jogador))
+
+nave_img_2 = pygame.image.load("nave2.png")
+nave_img_2 = pygame.transform.scale(nave_img_2, (largura_jogador, altura_jogador))
+
+nave_img_1 = pygame.image.load("nave3.png")
+nave_img_1 = pygame.transform.scale(nave_img_1, (largura_jogador, altura_jogador))
 
 
 qnt_linha_inimigo = 7
@@ -300,7 +311,7 @@ class Game:
 
     def draw(self, surface):
         surface.blit(background_image, (0, 0))
-        draw_player(surface, self.player_x, self.player_y, self.shield_active)
+        draw_player(surface, self.player_x, self.player_y, self.shield_active, self.player_lives)
         for b in self.bullets: b.draw(surface)
         for b in self.enemy_bullets: b.draw(surface)
         for inim in self.enemies: inim.draw(surface)
@@ -309,15 +320,20 @@ class Game:
         draw_text(surface, f"VIDAS: {self.player_lives}", largura - 150, 10)
         draw_text(surface, f"NÍVEL: {self.nivel}", largura // 2 - 60, 10)
         pygame.display.flip()
+def draw_player(surface, x, y, shield_active, vidas=5):
+    if vidas >= 5:
+        imagem = nave_img_5
+    elif 3 <= vidas <= 4:
+        imagem = nave_img_4
+    elif vidas == 2:
+        imagem = nave_img_2
+    else:
+        imagem = nave_img_1
 
-def draw_player(surface, x, y, shield):
-    points = [(x + largura_jogador / 2, y), (x + largura_jogador, y + altura_jogador), (x, y + altura_jogador)]
-    pygame.draw.polygon(surface, cor_jogador, points)
-    pygame.draw.polygon(surface, (0, 214, 255), points, 3)
-    pygame.draw.circle(surface, (0, 76, 102), (int(x + largura_jogador / 2), int(y + altura_jogador * 0.6)), 6)
-    pygame.draw.circle(surface, cor_jogador, (int(x + largura_jogador / 2), int(y + altura_jogador * 0.6)), 6, 2)
-    if shield:
-        pygame.draw.circle(surface, cor_escudo, (int(x + largura_jogador / 2), int(y + altura_jogador / 2)), 25, 2)
+    surface.blit(imagem, (x, y))
+
+    if shield_active:
+        pygame.draw.circle(surface, cor_escudo, (x + largura_jogador // 2, y + altura_jogador // 2), max(largura_jogador, altura_jogador), 2)
 
 def draw_text(surface, text, x, y, font=LARGE_FONT):
     surface.blit(font.render(text, True, cor_textos), (x, y))
