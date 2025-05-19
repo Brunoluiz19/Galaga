@@ -37,8 +37,8 @@ FONT = pygame.font.SysFont('Orbitron', 20, bold=True)
 LARGE_FONT = pygame.font.SysFont('Orbitron', 32, bold=True)
 clock = pygame.time.Clock()
 FPS = 60
-largura_jogador = 60
-altura_jogador = 60
+largura_jogador = 80
+altura_jogador = 80
 velocidade_jogador = 5
 largura_tiro = 7
 altura_tiro = 13
@@ -358,9 +358,6 @@ def draw_player(surface, x, y, shield_active, vidas=5):
     surface.blit(imagem, (x, y))
 
     surface.blit(imagem, (x, y))
-
-    if shield_active:
-        pygame.draw.circle(surface, cor_escudo, (x + largura_jogador // 2, y + altura_jogador // 2), max(largura_jogador, altura_jogador), 2)
 
 def draw_text(surface, text, x, y, font=LARGE_FONT):
     surface.blit(font.render(text, True, cor_textos), (x, y))
