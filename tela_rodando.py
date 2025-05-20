@@ -78,10 +78,10 @@ inicio_inimigo_x = 25
 inicio_inimigo_y = 60
 
 tipo_inimigo = [
-    {'name': 'red', 'cor': cor_inimigo_vermelho, 'speed_factor': 1.5, 'pontos': 250, 'hp': 2, 'tiros': 1, 'dano': 2, 'cor_tiro': cor_tiro_2x_dano},
-    {'name': 'green', 'cor': cor_inimigo_verde, 'speed_factor': 1.0, 'pontos': 200, 'hp': 3, 'tiros': 1, 'dano': 1, 'cor_tiro': cor_tiro_inimigo},
-    {'name': 'blue', 'cor': cor_inimigo_azul, 'speed_factor': 0.8, 'pontos': 100, 'hp': 2, 'tiros': 1, 'dano': 1, 'cor_tiro': cor_tiro_inimigo},
-    {'name': 'purple', 'cor': cor_inimigo_roxo, 'speed_factor': 0.4, 'pontos': 500, 'hp': 6, 'tiros': 2, 'dano': 1, 'cor_tiro': cor_tiro_inimigo},
+    {'name': 'red', 'cor': cor_inimigo_vermelho, 'speed_factor': 1.5, 'pontos': 250, 'hp': 1, 'tiros': 1, 'dano': 2, 'cor_tiro': cor_tiro_2x_dano},
+    {'name': 'green', 'cor': cor_inimigo_verde, 'speed_factor': 1.0, 'pontos': 200, 'hp': 2, 'tiros': 1, 'dano': 1, 'cor_tiro': cor_tiro_inimigo},
+    {'name': 'blue', 'cor': cor_inimigo_azul, 'speed_factor': 0.8, 'pontos': 100, 'hp': 1, 'tiros': 1, 'dano': 1, 'cor_tiro': cor_tiro_inimigo},
+    {'name': 'purple', 'cor': cor_inimigo_roxo, 'speed_factor': 0.4, 'pontos': 500, 'hp': 4, 'tiros': 2, 'dano': 1, 'cor_tiro': cor_tiro_inimigo},
 ]
 
 def mostrar_explosao(screen):
@@ -110,7 +110,7 @@ def mostrar_explosao(screen):
         texto_rect = texto_game_over.get_rect(center=(largura // 2, altura // 2 - frame.get_height() // 2 - 60))
         screen.blit(texto_game_over, texto_rect)
         pygame.display.flip()
-        pygame.time.delay(150)  # Tempo entre frames (ajuste conforme necessário)
+        pygame.time.delay(100)  # Tempo entre frames (ajuste conforme necessário)
 class tiro:
     def __init__(self, x, y, speed, from_player=True, damage=1, color=None, penetrante=False):
         self.x = x
@@ -299,7 +299,13 @@ class Game:
             if b.off_screen():
                 self.enemy_bullets.remove(b)
                 continue
-            player_rect = pygame.Rect(self.player_x, self.player_y, largura_jogador, altura_jogador)
+            hitbox_margin = 15
+            player_rect = pygame.Rect(
+                self.player_x + hitbox_margin,
+                self.player_y + hitbox_margin,
+                largura_jogador - 2 * hitbox_margin,
+                altura_jogador - 2 * hitbox_margin
+            )
             if b.rect.colliderect(player_rect):
                 if not self.shield_active:
                     self.player_lives -= b.damage
@@ -310,14 +316,20 @@ class Game:
                     mostrar_explosao(screen)
                     pygame.mixer.music.stop()
                     pygame.quit()
-                    subprocess.run([sys.executable, "ranking.py"])
+                    subprocess.run([sys.executable, "ranking.py", str(self.score)])
                     sys.exit()
         for p in self.powerups[:]:
             p.update()
             if p.off_screen():
                 self.powerups.remove(p)
             else:
-                player_rect = pygame.Rect(self.player_x, self.player_y, largura_jogador, altura_jogador)
+                hitbox_margin = 15
+                player_rect = pygame.Rect(
+                    self.player_x + hitbox_margin,
+                    self.player_y + hitbox_margin,
+                    largura_jogador - 2 * hitbox_margin,
+                    altura_jogador - 2 * hitbox_margin
+                )
                 if p.rect.colliderect(player_rect):
                     if p.kind == 'vida':
                         self.player_lives += 1

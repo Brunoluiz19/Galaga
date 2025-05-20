@@ -5,7 +5,6 @@ import subprocess
 
 # Inicializa o pygame
 pygame.init()
-# Inicia o mixer e carrega a música de início
 pygame.mixer.init()
 pygame.mixer.music.load("melhor_som_final.mp3")
 pygame.mixer.music.play(1)  # 0 = toca uma vez
@@ -37,8 +36,9 @@ def salvar_ranking(ranking):
 
 def inserir_pontuacao(nova_pontuacao):
     ranking = carregar_ranking()
-    ranking = [(nome, int(p)) for nome, p in ranking]
-    if len(ranking) < 10 or nova_pontuacao > ranking[-1][1]:
+    ranking = [(nome, int(p)) for nome, p in ranking if nome and p.strip().isdigit()]
+
+    if len(ranking) < 10 or nova_pontuacao > min((p for _, p in ranking), default=0):
         nome = obter_nome()
         ranking.append((nome, nova_pontuacao))
         ranking.sort(key=lambda x: x[1], reverse=True)
@@ -80,7 +80,7 @@ def desenhar_botao(texto, rect, ativo):
 
 def mostrar_ranking():
     ranking = carregar_ranking()
-    ranking = [(nome, int(p)) for nome, p in ranking]
+    ranking = [(nome, int(p)) for nome, p in ranking if nome and p.isdigit()]
 
     botao_jogar = pygame.Rect(60, 620, 150, 50)
     botao_inicio = pygame.Rect(230, 620, 150, 50)
@@ -127,13 +127,17 @@ def mostrar_ranking():
         pygame.display.flip()
         clock.tick(30)
 
+def salvar_pontuacao(score):
+    inserir_pontuacao(score)
+
 if __name__ == "__main__":
     if len(sys.argv) > 1:
         try:
             nova_pontuacao = int(sys.argv[1])
-            inserir_pontuacao(nova_pontuacao)
+            salvar_pontuacao(nova_pontuacao)
         except ValueError:
             print("Erro: valor de pontuação inválido.")
+
     mostrar_ranking()
     pygame.quit()
     sys.exit()
