@@ -85,32 +85,45 @@ tipo_inimigo = [
 ]
 
 def mostrar_explosao(screen):
-    gif = Image.open("explosao_j.gif")
-    frames = []
+    # Mostra explosão do jogador
+    explosao = Image.open("explosao_j.gif")
+    frames_explosao = []
 
     try:
         while True:
-            frame = gif.copy()
-            frame = frame.convert("RGBA")
-            mode = frame.mode
-            size = frame.size
-            data = frame.tobytes()
-            py_image = pygame.image.fromstring(data, size, mode)
-            frames.append(py_image)
-            gif.seek(len(frames))  # Próximo frame
+            frame = explosao.copy().convert("RGBA")
+            py_image = pygame.image.fromstring(frame.tobytes(), frame.size, frame.mode)
+            frames_explosao.append(py_image)
+            explosao.seek(len(frames_explosao))
     except EOFError:
-        pass  # Chegou ao fim do GIF
-        pygame.font.init()
-    fonte = pygame.font.SysFont("Comic Sans MS", 64, bold=True)
-    texto_game_over = fonte.render("GAME OVER!", True, (cor_escudo))
-    # Exibe os frames do GIF na tela
-    for frame in frames:
-        screen.blit(background_image, (0, 0))  # Redesenha o fundo
+        pass
+
+    for frame in frames_explosao:
+        screen.blit(background_image, (0, 0))
         screen.blit(frame, (largura // 2 - frame.get_width() // 2, altura // 2 - frame.get_height() // 2))
-        texto_rect = texto_game_over.get_rect(center=(largura // 2, altura // 2 - frame.get_height() // 2 - 60))
-        screen.blit(texto_game_over, texto_rect)
         pygame.display.flip()
-        pygame.time.delay(100)  # Tempo entre frames (ajuste conforme necessário)
+        pygame.time.delay(100)
+
+    # Mostra GIF de Game Over
+    game_over = Image.open("gameover.gif")
+    frames_gameover = []
+
+    try:
+        while True:
+            frame = game_over.copy().convert("RGBA")
+            py_image = pygame.image.fromstring(frame.tobytes(), frame.size, frame.mode)
+            frames_gameover.append(py_image)
+            game_over.seek(len(frames_gameover))
+    except EOFError:
+        pass
+
+    for _ in range(2):  # Mostra o game over.gif 2 vezes
+        for frame in frames_gameover:
+            screen.blit(background_image, (0, 0))
+            screen.blit(frame, (largura // 2 - frame.get_width() // 2, altura // 2 - frame.get_height() // 2))
+            pygame.display.flip()
+            pygame.time.delay(100)
+
 class tiro:
     def __init__(self, x, y, speed, from_player=True, damage=1, color=None, penetrante=False):
         self.x = x
