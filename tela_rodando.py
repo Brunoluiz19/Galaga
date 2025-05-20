@@ -1,3 +1,4 @@
+from PIL import Image
 from cores import (
     cor_jogador,
     cor_inimigo_vermelho,
@@ -37,8 +38,8 @@ FONT = pygame.font.SysFont('Orbitron', 20, bold=True)
 LARGE_FONT = pygame.font.SysFont('Orbitron', 32, bold=True)
 clock = pygame.time.Clock()
 FPS = 60
-largura_jogador = 80
-altura_jogador = 80
+largura_jogador = 70
+altura_jogador = 70
 velocidade_jogador = 5
 largura_tiro = 7
 altura_tiro = 13
@@ -83,6 +84,33 @@ tipo_inimigo = [
     {'name': 'purple', 'cor': cor_inimigo_roxo, 'speed_factor': 0.5, 'pontos': 500, 'hp': 4, 'tiros': 2, 'dano': 1, 'cor_tiro': cor_tiro_inimigo},
 ]
 
+def mostrar_explosao(screen):
+    gif = Image.open("explosao_j.gif")
+    frames = []
+
+    try:
+        while True:
+            frame = gif.copy()
+            frame = frame.convert("RGBA")
+            mode = frame.mode
+            size = frame.size
+            data = frame.tobytes()
+            py_image = pygame.image.fromstring(data, size, mode)
+            frames.append(py_image)
+            gif.seek(len(frames))  # Próximo frame
+    except EOFError:
+        pass  # Chegou ao fim do GIF
+        pygame.font.init()
+    fonte = pygame.font.SysFont("Comic Sans MS", 64, bold=True)
+    texto_game_over = fonte.render("GAME OVER!", True, (cor_escudo))
+    # Exibe os frames do GIF na tela
+    for frame in frames:
+        screen.blit(background_image, (0, 0))  # Redesenha o fundo
+        screen.blit(frame, (largura // 2 - frame.get_width() // 2, altura // 2 - frame.get_height() // 2))
+        texto_rect = texto_game_over.get_rect(center=(largura // 2, altura // 2 - frame.get_height() // 2 - 60))
+        screen.blit(texto_game_over, texto_rect)
+        pygame.display.flip()
+        pygame.time.delay(150)  # Tempo entre frames (ajuste conforme necessário)
 class tiro:
     def __init__(self, x, y, speed, from_player=True, damage=1, color=None, penetrante=False):
         self.x = x
@@ -278,7 +306,12 @@ class Game:
                 self.enemy_bullets.remove(b)
                 if self.player_lives <= 0:
                     self.running = False
-
+                if self.player_lives <= 0:
+                    mostrar_explosao(screen)
+                    pygame.mixer.music.stop()
+                    pygame.quit()
+                    subprocess.run([sys.executable, "ranking.py"])
+                    sys.exit()
         for p in self.powerups[:]:
             p.update()
             if p.off_screen():
