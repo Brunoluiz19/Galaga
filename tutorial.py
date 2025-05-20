@@ -24,20 +24,24 @@ try:
 except:
     fundo = None
 
+# Carregar imagens dos inimigos
+try:
+    inimigos_imgs = [
+        pygame.image.load("inimigo_azul.png").convert_alpha(),   # Azul (fraco e lento)
+        pygame.image.load("inimigo_verde.png").convert_alpha(),  # Verde (resistente)
+        pygame.image.load("inimigo_vermelho.png").convert_alpha(),  # Vermelho (forte e rápido)
+        pygame.image.load("inimigo_roxo.png").convert_alpha()   # Magenta (muito resistente)
+    ]
+    inimigos_imgs = [pygame.transform.scale(img, (50, 50)) for img in inimigos_imgs]
+except:
+    inimigos_imgs = [None] * 4  # Se imagens não forem carregadas, evita erro
+
 def draw_text(surface, text, x, y, font=FONT, color=(0, 0, 0)):
     text_surface = font.render(text, True, color)
     surface.blit(text_surface, (x, y))
 
 def draw_powerup_circle(surface, color, x, y, radius=10):
     pygame.draw.circle(surface, color, (x, y), radius)
-
-def draw_enemy_triangle(surface, color, x, y, size=20):
-    points = [
-        (x, y - size // 2),               # topo
-        (x - size // 2, y + size // 2),   # canto inferior esquerdo
-        (x + size // 2, y + size // 2),   # canto inferior direito
-    ]
-    pygame.draw.polygon(surface, color, points)
 
 # Função do tutorial
 def show_tutorial():
@@ -77,19 +81,20 @@ def show_tutorial():
         y += 50
         draw_text(screen, "TIPOS DE INIMIGOS:", 100, y)
         y += 30
-        draw_enemy_triangle(screen, (0, 0, 255), 120, y + 10)  # Azul
-        draw_text(screen, "Azul: fraco e lento (100 pontos)", 150, y)
-        y += 30
-        draw_enemy_triangle(screen, (0, 255, 0), 120, y + 10)  # Verde
-        draw_text(screen, "Verde: resistente (2 de vida, 1 de dano) (200 pontos)", 150, y)
-        y += 30
-        draw_enemy_triangle(screen, (255, 0, 0), 120, y + 10)  # Vermelho
-        draw_text(screen, "Vermelho: rápido e forte (1 de vida, 2 de dano) (250 pontos)", 150, y)
-        y += 30
-        draw_enemy_triangle(screen, (255, 0, 255), 120, y + 10)  # Magenta
-        draw_text(screen, "Magenta: muito resistente (4 de vida, tiro duplo) (500 pontos)", 150, y)
 
-        y += 50
+        inimigos_descricoes = [
+            "Azul: fraco e lento (100 pontos)",
+            "Verde: resistente (2 de vida, 1 de dano) (200 pontos)",
+            "Vermelho: rápido e forte (1 de vida, 2 de dano) (250 pontos)",
+            "Magenta: muito resistente (4 de vida, tiro duplo) (500 pontos)"
+        ]
+
+        for i in range(4):
+            if inimigos_imgs[i]:
+                screen.blit(inimigos_imgs[i], (120, y))
+            draw_text(screen, inimigos_descricoes[i], 180, y + 10)
+            y += 60
+
         draw_text(screen, "POWER-UPS:", 100, y)
         y += 30
         draw_powerup_circle(screen, (0, 0, 255), 120, y + 10)
