@@ -97,7 +97,7 @@ def show_tutorial():
 
         draw_text(screen, "POWER-UPS:", 100, y)
         y += 30
-        draw_powerup_circle(screen, (0, 0, 255), 120, y + 10)
+        draw_powerup_circle(screen, (51, 255, 204), 120, y + 10)
         draw_text(screen, "Azul: Escudo temporário", 150, y)
         y += 30
         draw_powerup_circle(screen, (255, 255, 0), 120, y + 10)
