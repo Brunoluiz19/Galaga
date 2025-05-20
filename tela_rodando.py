@@ -78,10 +78,10 @@ inicio_inimigo_x = 25
 inicio_inimigo_y = 60
 
 tipo_inimigo = [
-    {'name': 'red', 'cor': cor_inimigo_vermelho, 'speed_factor': 1.0, 'pontos': 250, 'hp': 1, 'tiros': 1, 'dano': 2, 'cor_tiro': cor_tiro_2x_dano},
-    {'name': 'green', 'cor': cor_inimigo_verde, 'speed_factor': 1.2, 'pontos': 200, 'hp': 2, 'tiros': 1, 'dano': 1, 'cor_tiro': cor_tiro_inimigo},
-    {'name': 'blue', 'cor': cor_inimigo_azul, 'speed_factor': 0.8, 'pontos': 100, 'hp': 1, 'tiros': 1, 'dano': 1, 'cor_tiro': cor_tiro_inimigo},
-    {'name': 'purple', 'cor': cor_inimigo_roxo, 'speed_factor': 0.5, 'pontos': 500, 'hp': 4, 'tiros': 2, 'dano': 1, 'cor_tiro': cor_tiro_inimigo},
+    {'name': 'red', 'cor': cor_inimigo_vermelho, 'speed_factor': 1.5, 'pontos': 250, 'hp': 2, 'tiros': 1, 'dano': 2, 'cor_tiro': cor_tiro_2x_dano},
+    {'name': 'green', 'cor': cor_inimigo_verde, 'speed_factor': 1.0, 'pontos': 200, 'hp': 3, 'tiros': 1, 'dano': 1, 'cor_tiro': cor_tiro_inimigo},
+    {'name': 'blue', 'cor': cor_inimigo_azul, 'speed_factor': 0.8, 'pontos': 100, 'hp': 2, 'tiros': 1, 'dano': 1, 'cor_tiro': cor_tiro_inimigo},
+    {'name': 'purple', 'cor': cor_inimigo_roxo, 'speed_factor': 0.4, 'pontos': 500, 'hp': 6, 'tiros': 2, 'dano': 1, 'cor_tiro': cor_tiro_inimigo},
 ]
 
 def mostrar_explosao(screen):
