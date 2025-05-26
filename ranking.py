@@ -91,7 +91,7 @@ def mostrar_ranking():
     while esperando:
         screen.fill(BG_COLOR)
 
-        titulo = LARGE_FONT.render("TOP 10 RANKING", True, COLOR_TEXT)
+        titulo = LARGE_FONT.render("Salão da Glória Cósmica", True, COLOR_TEXT)
         screen.blit(titulo, (WIDTH // 2 - titulo.get_width() // 2, 40))
 
         for i, (nome, pontos) in enumerate(ranking):

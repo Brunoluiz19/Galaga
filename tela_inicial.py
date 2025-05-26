@@ -63,12 +63,12 @@ while jogo:
             jogo = False
         elif evento.type == pygame.MOUSEBUTTONDOWN:
             if rect_start.collidepoint(evento.pos):
+                subprocess.Popen([sys.executable, "tela_rodando.py"])
                 pygame.quit()
-                subprocess.run([sys.executable, "tela_rodando.py"])
                 sys.exit()
             elif rect_comandos.collidepoint(evento.pos):
+                subprocess.Popen([sys.executable, "tutorial.py"])
                 pygame.quit()
-                subprocess.run([sys.executable, "tutorial.py"])
                 sys.exit()
 
     tela.blit(fundo, (0, 0))
