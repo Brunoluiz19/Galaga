@@ -35,7 +35,15 @@ para equilibrar a dificuldade do jogo criamos alguns power ups que ajudaram os j
 **Rosa:** Ganha uma vida extra
 
 **Azul escuro:** tiro atravessa os inimigos
-## Demonstração 🎥
+## 🎥 Demonstração de Gameplay
+
+Veja o jogo **GALAGA** em ação! Assista ao vídeo abaixo para conferir as mecânicas, efeitos visuais e dinâmica de combate espacial:
+
+[![Clique para assistir ao gameplay](https://img.youtube.com/vi/1A00K6ZjUCo/0.jpg)](https://youtu.be/1A00K6ZjUCo)
+
+> ⚠️ Dica: ative o som para uma experiência completa!
+
+
 
 ## ❓ FAQ
 **Qual a chance de dropar um power up?**

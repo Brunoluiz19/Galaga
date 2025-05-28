@@ -26,7 +26,7 @@ som_tiro = pygame.mixer.Sound("som_tiro.wav")
 som_tiro.set_volume(0.5)
 pygame.mixer.init()
 pygame.mixer.music.load("som_principal.mp3")
-pygame.mixer.music.play(1)
+pygame.mixer.music.play(4)
 largura, altura = 1000, 800
 screen = pygame.display.set_mode((largura, altura))
 pygame.display.set_caption("GALAGA")
